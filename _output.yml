@@ -1,0 +1,10 @@
+bookdown::gitbook:
+  css: style.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">Self Insured, Inc.</a></li>
+      after: |
+        <li><a href="https://ractuary.github.io/ractuary/" target="blank">RActuary</a></li>
+  split_by: "chapter"
+

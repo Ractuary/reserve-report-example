@@ -1,0 +1,36 @@
+
+# Cover Letter {-}
+
+
+`r Sys.Date()`
+
+John Doe 
+Risk Management Director  
+Self Insured, Inc.  
+555 East West Rd.  
+Cloud City, Bespin  
+  
+<br />  
+
+__**Re: Actuarial Analysis**__
+
+    
+Mr. Doe:
+
+Enclosed are the results of and actuarial analysis prepared by RActuary.
+
+It has been a pleasure working on this assignment and we look forward to future opportunities to work together.
+
+Regards,  
+
+<div style="width: 200px;">
+  <br />
+  <br />
+  <hr style="margin-bottom: 0;"/>
+  Andy Merlino  
+  RActuary Analyst
+</div>
+
+
+
+

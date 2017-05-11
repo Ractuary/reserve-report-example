@@ -1,0 +1,5 @@
+book_filename: "reserve-report-example"
+language:
+  ui:
+    chapter_name: ""
+output_dir: docs

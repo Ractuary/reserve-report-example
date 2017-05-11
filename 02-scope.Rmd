@@ -1,0 +1,10 @@
+# Purpose and Scope {#scope}
+
+Ractuary was requested by `r params$company` (`r params$company_short`) to provide an unpaid loss estimate for their workers' compensation loss and allocated loss adjustment expense (ALAE) as of `r params$accounting_date` using data valued as of `r params$val_date` and additional information received through `r params$info_date`.
+
+The full scope of the analysis includes:
+
+1. Estimation of unpaid loss & ALAE as of `r params$val_date`
+2. Presentation of results to management
+
+This report is intended for use only by `r params$company_short`.  Please advise RActuary of the release of this report to any other parties.

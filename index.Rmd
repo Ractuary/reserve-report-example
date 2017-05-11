@@ -1,0 +1,75 @@
+--- 
+title: "Self Insured, Inc. <br />Estimation of Workers' Compensation <br/ >Unpaid Loss & ALAE as of 2017-03-31"
+author: "Prepared by RActuary"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+cover-image: "images/ractuary-logo.png"
+github-repo: ractuary/reserve-report-example
+description: "A minimal example of generating an actuarial reserve report using the bookdown R package"
+params:
+  val_date: "2017-03-31"
+  accounting_date: "2017-03-31"
+  info_date: "2017-04-10"
+  company: "Self Insured, Inc."
+  company_short: "SII"
+---
+
+# {-}
+
+```{r global_options, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r cover-image}
+# optionally show cover image on title page
+#knitr::include_graphics('images/cover.png', dpi = NA)
+```
+
+```{r load_packages}
+library(devtri)
+library(DT)
+library(summaryrow)
+library(tidyr)
+library(widgetframe)
+```
+
+```{r}
+
+```
+
+```{r paid_data}
+paid_tri <- dev_tri(
+  origin = tri_data$origin,
+  age = tri_data$dev,
+  value = tri_data$paid
+)
+
+#idf_picker(paid_tri)
+
+# selected idfs
+sel_paid_idfs <- idf(idfs = c(2.37, 1.275, 1.152, 1.073, 1.018, 1.010, 1.005, 1.000), first_age = 1)
+sel_paid_cdfs <- idf2cdf(sel_paid_idfs)
+```
+
+
+```{r reported_data}
+rpt_tri <- dev_tri(
+  origin = tri_data$origin,
+  age = tri_data$dev,
+  value = tri_data$incurred
+)
+
+#idf_picker(rpt_tri)
+
+# selected idfs
+sel_rpt_idfs <- idf(idfs = c(1.100, 1.001, 1.000, 1.000, 1.000, 1.000), first_age = 1)
+sel_rpt_cdfs <- idf2cdf(sel_rpt_idfs)
+```
+
+
+

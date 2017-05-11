@@ -1,0 +1,73 @@
+# Executive Summary {#summary}
+
+Estimated unpaid loss & ALAE as of `r params$val_date`:
+
+```{r summary, fig.cap = "Summary of Loss & ALAE"}
+paid_proj <- latest(paid_tri) %>%
+                     left_join(sel_paid_cdfs[, -3], by = "age") %>%
+                     mutate(paid_proj = value * cdfs)
+
+rpt_proj <- latest(rpt_tri) %>%
+                     left_join(sel_rpt_cdfs[, -3], by = "age") %>%
+                     mutate(rpt_proj = value * cdfs)
+
+est_ult <- left_join(paid_proj[, c(1, 5)], rpt_proj[, c(1, 5)], by = "origin") %>%
+             mutate(sel_ult = (paid_proj + rpt_proj) / 2 )
+
+out <- left_join(latest(paid_tri), latest(rpt_tri), by = c("origin", "age")) %>%
+         select(-age)
+names(out)[2:3] <- c("paid", "reported")
+out <- out %>%
+         mutate(case = reported - paid) %>%
+         left_join(est_ult[, c("origin", "sel_ult")], by = "origin") %>%
+         mutate(ibnr = sel_ult - reported,
+                unpaid = sel_ult - paid)
+
+out_display <- out %>%
+  blank_row() %>%
+  totals_row(cols = 2:7, label_col = 1)
+
+col_names <- htmltools::withTags(table(
+  class = 'display',
+  thead(
+    tr(
+      th(rowspan = 2, "Policy Period"),
+      th(colspan = 6, paste0("Loss & ALAE at ", params$accounting_date))
+    ),
+    tr(
+      th("[1]", br(), "Paid", style = 'text-align: center'),
+      th("[2]", br(), "Reported", style = 'text-align: center'),
+      th("[3]", br(), "Case", style = 'text-align: center'),
+      th("[4]", br(), "Ultimate", style = 'text-align: center'),
+      th("[5]", br(), "IBNR", style = 'text-align: center'),
+      th("[6]", br(), "Unpaid", style = 'text-align: center')
+    )
+  )
+))             
+DT::datatable(
+  out_display,
+  rownames = FALSE,
+  container = col_names,
+  options = list(
+    dom = 't',
+    ordering = FALSE,
+    columnDefs = list(
+      list(targets = 0, class = "dt-center")
+    )
+  ),
+  escape = FALSE
+) %>%
+  formatCurrency(
+    2:7,
+    currency = "",
+    digits = 0
+  ) %>%
+  frameWidget(height = '100%')
+```
+
+Notes:  
+&nbsp;&nbsp;[1] and [2] *provided by `r params$company_short`*  
+&nbsp;&nbsp;[3] *= [2] - [1]*  
+&nbsp;&nbsp;[4] *see figure \@ref(fig:sel-ult)*  
+&nbsp;&nbsp;[5] *= [4] - [2]*  
+&nbsp;&nbsp;[6] *= [4] - [1]*  

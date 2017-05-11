@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Self Insured, Inc.  Estimation of Workers’ Compensation  Unpaid Loss &amp; ALAE as of 2017-03-31</title>
+  <meta name="description" content="A minimal example of generating an actuarial reserve report using the bookdown R package">
+  <meta name="generator" content="bookdown 0.3.18 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Self Insured, Inc.  Estimation of Workers’ Compensation  Unpaid Loss &amp; ALAE as of 2017-03-31" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="images/ractuary-logo.png" />
+  <meta property="og:description" content="A minimal example of generating an actuarial reserve report using the bookdown R package" />
+  <meta name="github-repo" content="ractuary/reserve-report-example" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Self Insured, Inc.  Estimation of Workers’ Compensation  Unpaid Loss &amp; ALAE as of 2017-03-31" />
+  
+  <meta name="twitter:description" content="A minimal example of generating an actuarial reserve report using the bookdown R package" />
+  <meta name="twitter:image" content="images/ractuary-logo.png" />
+
+<meta name="author" content="Prepared by RActuary">
+
+
+<meta name="date" content="2017-05-11">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="estimation-of-ultimate.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/pymjs-1.2.0/pym.v1.min.js"></script>
+<script src="libs/widgetframe-binding-0.2.0/widgetframe.js"></script>
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Self Insured, Inc.</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="cover-letter.html"><a href="cover-letter.html"><i class="fa fa-check"></i>Cover Letter</a></li>
+<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Purpose and Scope</a></li>
+<li class="chapter" data-level="2" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>2</b> Executive Summary</a></li>
+<li class="chapter" data-level="3" data-path="estimation-of-ultimate.html"><a href="estimation-of-ultimate.html"><i class="fa fa-check"></i><b>3</b> Estimation of Ultimate</a><ul>
+<li class="chapter" data-level="3.1" data-path="estimation-of-ultimate.html"><a href="estimation-of-ultimate.html#paid-development"><i class="fa fa-check"></i><b>3.1</b> Paid Development</a></li>
+<li class="chapter" data-level="3.2" data-path="estimation-of-ultimate.html"><a href="estimation-of-ultimate.html#reported-development"><i class="fa fa-check"></i><b>3.2</b> Reported Development</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="triangles.html"><a href="triangles.html"><i class="fa fa-check"></i><b>4</b> Triangles</a><ul>
+<li class="chapter" data-level="4.1" data-path="triangles.html"><a href="triangles.html#paid-triangles"><i class="fa fa-check"></i><b>4.1</b> Paid Triangles</a></li>
+<li class="chapter" data-level="4.2" data-path="triangles.html"><a href="triangles.html#reported-triangles"><i class="fa fa-check"></i><b>4.2</b> Reported Triangles</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://ractuary.github.io/ractuary/" target="blank">RActuary</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Self Insured, Inc. <br />Estimation of Workers’ Compensation <br/ >Unpaid Loss &amp; ALAE as of 2017-03-31</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="triangles" class="section level1">
+<h1><span class="header-section-number">4</span> Triangles</h1>
+<div id="paid-triangles" class="section level2">
+<h2><span class="header-section-number">4.1</span> Paid Triangles</h2>
+<div class="figure"><span id="fig:paid-triangle"></span>
+<div id="htmlwidget-640a28bf803284e6a2d3" style="width:100%;height:100%;" class="widgetframe html-widget"></div>
+<!-- widgetframe widget-href="widget_paid-triangle.html" -->
+<script type="application/json" data-for="htmlwidget-640a28bf803284e6a2d3">{"x":{"url":"widget_paid-triangle.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 4.1: Paid Development Triangle
+</p>
+</div>
+<div class="figure"><span id="fig:paid-ata"></span>
+<div id="htmlwidget-581cb2f9ec87211ba6bf" style="width:100%;height:100%;" class="widgetframe html-widget"></div>
+<!-- widgetframe widget-href="widget_paid-ata.html" -->
+<script type="application/json" data-for="htmlwidget-581cb2f9ec87211ba6bf">{"x":{"url":"widget_paid-ata.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 4.2: Paid Age to Age Development Factors
+</p>
+</div>
+</div>
+<div id="reported-triangles" class="section level2">
+<h2><span class="header-section-number">4.2</span> Reported Triangles</h2>
+<div class="figure"><span id="fig:rpt-triangle"></span>
+<div id="htmlwidget-70529c253204bc1d4532" style="width:100%;height:100%;" class="widgetframe html-widget"></div>
+<!-- widgetframe widget-href="widget_rpt-triangle.html" -->
+<script type="application/json" data-for="htmlwidget-70529c253204bc1d4532">{"x":{"url":"widget_rpt-triangle.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 4.3: Reported Development Triangle
+</p>
+</div>
+<div class="figure"><span id="fig:rpt-ata"></span>
+<div id="htmlwidget-e33070ff84e91fa63622" style="width:100%;height:100%;" class="widgetframe html-widget"></div>
+<!-- widgetframe widget-href="widget_rpt-ata.html" -->
+<script type="application/json" data-for="htmlwidget-e33070ff84e91fa63622">{"x":{"url":"widget_rpt-ata.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 4.4: Reported Age to Age Development Factors
+</p>
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="estimation-of-ultimate.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

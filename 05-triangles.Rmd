@@ -1,0 +1,105 @@
+# Triangles
+
+## Paid Triangles
+
+```{r paid-triangle, fig.cap="Paid Development Triangle"}
+paid_tri_spread <- spread_tri(paid_tri)
+
+
+
+tri_exhibit <- function(tri, 
+                        digits = 0, 
+                        origin_name = "Policy Period",
+                        tri_name = "Cumulative Paid Loss & ALAE (Months)",
+                        ages_fun = function(x) x * 12) {
+  col_names <- htmltools::withTags(table(
+    class = 'display',
+    thead(
+      tr(
+        th(rowspan = 2, origin_name),
+        th(colspan = length(tri) - 1, tri_name)
+      ),
+      tr(
+        lapply(as.numeric(names(tri)[-1]) %>% ages_fun(), th, style = 'text-align: center')
+      )
+    )
+  ))
+  
+  DT::datatable(
+    tri,
+    container = col_names,
+    rownames = FALSE,
+    options = list(
+      dom = "t",
+      ordering = FALSE,
+      fillContainer = TRUE,
+      columnDefs = list(
+        list(targets = 0, class = "dt-center")
+      )
+    ) 
+  ) %>%
+    formatCurrency(
+      columns = 2:length(tri),
+      digits = digits,
+      currency = ""
+    ) %>% 
+  frameWidget(height = '100%')
+}
+
+tri_exhibit(paid_tri_spread, 0)
+  
+```
+
+```{r paid-ata, fig.cap="Paid Age to Age Development Factors"}
+
+ata_exhibit <- function(tri, sel_idf_) {
+  
+  cdfs <- idf2cdf(sel_idf_)
+  
+  ata_spread <- ata_tri(tri) %>%
+                     spread_tri() %>%
+                     filter(origin < max(origin)) %>%
+                   blank_row() %>%
+                   averages_row(df = ., cols = 2:length(.), label_col = 1, label = "Straight AVG")
+  
+  cdf_tail <- cdfs$cdfs[cdfs$age == max(tri$age)]
+  
+  idf_display <- sel_idf_ %>%
+                   filter(age <= max(tri$age)) %>%
+                   mutate(idfs = ifelse(age == max(age), cdf_tail, idfs)) %>%
+                   select(-earned_ratio) %>%
+                   spread(key = age, value = idfs)  
+
+  cdf_display <- cdfs %>%
+                    filter(age <= max(tri$age)) %>%
+                    select(-earned_ratio) %>%
+                    spread(key = age, value = cdfs)
+  
+  ldfs_display <- rbind(idf_display, cdf_display)
+
+  ldfs_display <- cbind(data_frame("origin" = c("Selected IDFs", "Indicated CDFs")), ldfs_display)
+
+  rbind(ata_spread, ldfs_display)
+}
+
+paid_ata_spread <- ata_exhibit(paid_tri, sel_idf_ = sel_paid_idfs)
+
+tri_exhibit(paid_ata_spread, 3, 
+            tri_name = "Paid Age to Age Development Factors (Months)",
+            ages_fun = function(x) paste0(x * 12, "-", (x + 1) * 12))
+```
+
+## Reported Triangles
+
+```{r rpt-triangle, fig.cap="Reported Development Triangle"}
+rpt_tri_spread <- spread_tri(rpt_tri)
+tri_exhibit(rpt_tri_spread, 0)
+```
+
+```{r rpt-ata, fig.cap="Reported Age to Age Development Factors"}
+rpt_ata_spread <- ata_exhibit(rpt_tri, sel_rpt_idfs)
+
+tri_exhibit(rpt_ata_spread, 3, 
+            tri_name = "Paid Age to Age Development Factors (Months)",
+            ages_fun = function(x) paste0(x * 12, "-", (x + 1) * 12))
+```

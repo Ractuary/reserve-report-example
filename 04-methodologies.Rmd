@@ -1,0 +1,160 @@
+# Estimation of Ultimate
+
+We use the paid and reported development methods to estimate ultimate claims. Our selected ultimate in column [3] is our actuarial best estimate of the expected ultimate:
+
+```{r sel-ult, fig.cap = "Estimated and Selected Ultimates"}
+paid_proj <- latest(paid_tri) %>%
+                     left_join(sel_paid_cdfs[, -3], by = "age") %>%
+                     mutate(paid_proj = value * cdfs)
+
+rpt_proj <- latest(rpt_tri) %>%
+                     left_join(sel_rpt_cdfs[, -3], by = "age") %>%
+                     mutate(rpt_proj = value * cdfs)
+
+est_ult <- left_join(paid_proj[, c(1, 5)], rpt_proj[, c(1, 5)], by = "origin") %>%
+             mutate(sel_ult = (paid_proj + rpt_proj) / 2 )
+
+est_ult_display <- est_ult %>%
+  blank_row() %>%
+  totals_row(cols = 2:4, label_col = 1)
+
+col_names <- htmltools::withTags(table(
+    class = 'display',
+    thead(
+      tr(
+        th(rowspan = 2, "Policy Period"),
+        th(colspan = 3, "Estimated Ultimates")
+      ),
+      tr(
+        th(
+          "[1]",
+          br(),
+          "Paid Dev Method",
+          style = 'text-align: center'
+        ),
+        th(
+          "[2]",
+          br(),
+          "Reported Dev Method",
+          style = 'text-align: center'
+        ),
+        th(
+          "[3]",
+          br(),
+          "Selected",
+          style = 'text-align: center'
+        )
+      )
+    )
+  ))
+
+DT::datatable(
+  est_ult_display,
+  rownames = FALSE,
+  container = col_names,
+  options = list(
+    dom = 't',
+    ordering = FALSE,
+    columnDefs = list(
+      list(targets = 0, class = "dt-center")
+    )
+  ),
+  escape = FALSE
+) %>%
+  formatCurrency(
+    2:4,
+    currency = "",
+    digits = 0
+  ) %>%
+  frameWidget(height = '100%')
+  
+```
+
+Notes:  
+&nbsp;&nbsp;[1] *see figure \@ref(fig:paid-projection)*  
+&nbsp;&nbsp;[2] *see figure \@ref(fig:rpt-projection)*  
+&nbsp;&nbsp;[3] *selected based on actuarial judgement and results of ultimate estimation methods shown in columns [1] and [2]*
+
+## Paid Development
+
+The following table shows the paid development projections:
+
+```{r paid-projection, fig.cap = "Paid Development Method"}
+paid_proj_diplay <- paid_proj %>%
+  blank_row() %>%
+  totals_row(cols = c(3, 5), label_col = 1)
+
+
+DT::datatable(
+  paid_proj_diplay,
+  rownames = FALSE,
+  colnames = c("Policy Year", "Age", "[1] <br/> Paid", "[2] <br /> CDF", "[3] <br /> Estimated Ultimate"),
+  options = list(
+    dom = 't',
+    ordering = FALSE,
+    columnDefs = list(
+      list(targets = 0:1, class = "dt-center")
+    )
+  ),
+  escape = FALSE
+) %>%
+  formatCurrency(
+    c(3, 5),
+    currency = "",
+    digits = 0
+  ) %>%
+  formatRound(
+    4,
+    digits = 3
+  ) %>%
+  frameWidget(height = '100%')
+  
+```
+
+Notes:  
+&nbsp;&nbsp;[1] *provided by `r params$company_short`*  
+&nbsp;&nbsp;[2] *see figure \@ref(fig:paid-ata)*  
+&nbsp;&nbsp;[3] *= [1] x [2]*  
+
+To estimate the `CDF`s in column [2] we look at `r params$company_short`'s historical cumulative paid development as seen in figure \@ref(fig:paid-triangle) and loss development factors as shown in \@ref(fig:paid-ata).  Chanegs in the payment pattern can cause the paid development method to be inaccurate.
+
+## Reported Development
+
+```{r rpt-projection, fig.cap = "Reported Development Method"}
+rpt_proj_diplay <- rpt_proj %>%
+  blank_row() %>%
+  totals_row(cols = c(3, 5), label_col = 1)
+
+
+DT::datatable(
+  rpt_proj_diplay,
+  rownames = FALSE,
+  colnames = c("Policy Year", "Age", "[1] <br/> Reported", "[2] <br /> CDF", "[3] <br /> Estimated Ultimate"),
+  options = list(
+    dom = 't',
+    ordering = FALSE,
+    columnDefs = list(
+      list(targets = 0:1, class = "dt-center")
+    )
+  ),
+  escape = FALSE
+) %>%
+  formatCurrency(
+    c(3, 5),
+    currency = "",
+    digits = 0
+  ) %>%
+  formatRound(
+    4,
+    digits = 3
+  ) %>%
+  frameWidget(height = '100%')
+  
+```
+
+Notes:  
+&nbsp;&nbsp;[1] *provided by `r params$company_short`*  
+&nbsp;&nbsp;[2] *see figure \@ref(fig:rpt-ata)*  
+&nbsp;&nbsp;[3] *= [1] x [2]*  
+
+To estimate the `CDF`s in column [2] we look at `r params$company_short`'s historical cumulative reported development as seen in figure \ref(fig:rpt-triangle) and loss development factors as shown in \ref(fig:rpt-ata).  Changes in case reserve adequacy can cause the reported development method to be inaccurate.
