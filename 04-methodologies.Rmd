@@ -3,17 +3,6 @@
 We use the paid and reported development methods to estimate ultimate claims. Our selected ultimate in column [3] is our actuarial best estimate of the expected ultimate:
 
 ```{r sel-ult, fig.cap = "Estimated and Selected Ultimates"}
-paid_proj <- latest(paid_tri) %>%
-                     left_join(sel_paid_cdfs[, -3], by = "age") %>%
-                     mutate(paid_proj = value * cdfs)
-
-rpt_proj <- latest(rpt_tri) %>%
-                     left_join(sel_rpt_cdfs[, -3], by = "age") %>%
-                     mutate(rpt_proj = value * cdfs)
-
-est_ult <- left_join(paid_proj[, c(1, 5)], rpt_proj[, c(1, 5)], by = "origin") %>%
-             mutate(sel_ult = (paid_proj + rpt_proj) / 2 )
-
 est_ult_display <- est_ult %>%
   blank_row() %>%
   totals_row(cols = 2:4, label_col = 1)

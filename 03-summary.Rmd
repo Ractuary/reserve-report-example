@@ -12,7 +12,7 @@ rpt_proj <- latest(rpt_tri) %>%
                      mutate(rpt_proj = value * cdfs)
 
 est_ult <- left_join(paid_proj[, c(1, 5)], rpt_proj[, c(1, 5)], by = "origin") %>%
-             mutate(sel_ult = (paid_proj + rpt_proj) / 2 )
+             mutate(sel_ult = rpt_proj)
 
 out <- left_join(latest(paid_tri), latest(rpt_tri), by = c("origin", "age")) %>%
          select(-age)
@@ -71,3 +71,18 @@ Notes:
 &nbsp;&nbsp;[4] *see figure \@ref(fig:sel-ult)*  
 &nbsp;&nbsp;[5] *= [4] - [2]*  
 &nbsp;&nbsp;[6] *= [4] - [1]*  
+
+```{r}
+library(RColorBrewer)
+
+plot_ly(out, x = ~origin, y = ~paid, type = 'bar', name = 'Paid', marker = list(color="#1C2F2F"),
+        text = ~paste0("Paid: ", paid)) %>%
+  add_trace(y = ~case, name = 'Case', marker = list(color="#264E86"),
+            text = ~paste0("Case: ", case)) %>%
+  add_trace(y = ~round(ibnr, 0), name = 'IBNR', marker = list(color="#5E88FC"),
+            text = ~paste0("IBNR: ", ibnr)) %>%
+  layout(yaxis = list(title = 'Loss & ALAE'),
+         xaxis = list(title = 'Policy Period'),
+         barmode = 'stack') %>%
+  config(displaylogo = FALSE, displayModeBar = FALSE)
+```

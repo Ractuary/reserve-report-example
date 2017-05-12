@@ -36,10 +36,7 @@ library(DT)
 library(summaryrow)
 library(tidyr)
 library(widgetframe)
-```
-
-```{r}
-
+library(plotly)
 ```
 
 ```{r paid_data}
@@ -70,6 +67,4 @@ rpt_tri <- dev_tri(
 sel_rpt_idfs <- idf(idfs = c(1.100, 1.001, 1.000, 1.000, 1.000, 1.000), first_age = 1)
 sel_rpt_cdfs <- idf2cdf(sel_rpt_idfs)
 ```
-
-
 
